@@ -29,6 +29,16 @@ chimeraDetectionDenovo <- function(filename, abskew=2.0, mindiffs=3L, mindiv=0.8
                                    borderline=sub(".fasta", "_bordchimera.fasta", filename), 
                                    uchimeout=sub(".fasta", "_chimeraResults.txt", filename))
 {
+  
+  syscall <- paste("--uchime_denovo ", filename, 
+                   "--abskew", abskew,
+                   "--mindiffs", mindiffs, 
+                   "--mindiv", mindiv,
+                   "--minh", minh, 
+                   "--nonchimeras", nonchimerafile, 
+                   "--chimeras", chimerafile, 
+                   "--borderline", borderfile, 
+                   "--uchimeout", uchimeout, sep=" ")
   # System call parameters                                                                     
   # [18] "  --uchime_denovo FILENAME    detect chimeras "                                           
   # [20] "Options"                                                                                         
@@ -56,8 +66,6 @@ chimeraDetectionDenovo <- function(filename, abskew=2.0, mindiffs=3L, mindiv=0.8
   # [42] "  --xn REAL                   'no' vote weight (8.0)"                                            
   # [43] "  --xsize                     strip abundance information in output"  
   
-  # vsearch --uchime_denovo R-1_Rep1.representatives_nonchimeras.fasta --nonchimeras R-1_Rep1.representatives_nonchimeras2.fasta
-  syscall <- paste("--uchime_denovo ", sortfile, "--mindiffs", 3, "--minh", 0.2, "--nonchimeras", nonchimerafile, "--chimeras", chimerafile, "--borderline", borderfile, "--uchimeout", resfile, sep=" ")
   return(invisible(.vsearchBin(args=syscall)))
 }
 
