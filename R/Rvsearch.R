@@ -12,48 +12,63 @@
 # [14] "  --threads INT               number of threads to use, zero for all cores (0)"                  
 
 ## The main wrapper around vsearch
-chimeraDetection <- function()
+
+# Chimera detection using a reference database       
+# chimeraDetectionRef <- function()
+# {
+#   # [19] "  --uchime_ref FILENAME       detect chimeras" 
+#   # [25] "  --db FILENAME               reference database for --uchime_ref" 
+#   # [36] "  --self                      exclude identical labels for --uchime_ref"                         
+#   # [37] "  --selfid                    exclude identical sequences for --uchime_ref"    
+# }
+
+# Chimera detection de novo          
+chimeraDetectionDenovo <- function(filename, abskew=2.0, mindiffs=3L, mindiv=0.8, minh=0.28,
+                                   nonchimeras=sub(".fasta", "_nonchimera.fasta", filename), 
+                                   chimeras=sub(".fasta", "_chimera.fasta", filename), 
+                                   borderline=sub(".fasta", "_bordchimera.fasta", filename), 
+                                   uchimeout=sub(".fasta", "_chimeraResults.txt", filename))
 {
-  args <- ""
-  
-  # [17] "Chimera detection"                                                                               
-  # [18] "  --uchime_denovo FILENAME    detect chimeras de novo"                                           
-  # [19] "  --uchime_ref FILENAME       detect chimeras using a reference database"                        
+  # System call parameters                                                                     
+  # [18] "  --uchime_denovo FILENAME    detect chimeras "                                           
   # [20] "Options"                                                                                         
   # [21] "  --abskew REAL               min abundance ratio of parent vs chimera (2.0)"                    
-  # [22] "  --alignwidth INT            width of alignment in uchimealn output (80)"                       
-  # [23] "  --borderline FILENAME       output borderline chimeric sequences to file"                      
-  # [24] "  --chimeras FILENAME         output chimeric sequences to file"                                 
-  # [25] "  --db FILENAME               reference database for --uchime_ref"                               
-  # [26] "  --dn REAL                   'no' vote pseudo-count (1.4)"                                      
-  # [27] "  --fasta_score               include chimera score in fasta output"                             
   # [28] "  --mindiffs INT              minimum number of differences in segment (3)"                      
   # [29] "  --mindiv REAL               minimum divergence from closest parent (0.8)"                      
-  # [30] "  --minh REAL                 minimum score (0.28)"                                              
-  # [31] "  --nonchimeras FILENAME      output non-chimeric sequences to file"                             
+  # [30] "  --minh REAL                 minimum score (0.28)"    
+  
+  # [23] "  --borderline FILENAME       output borderline chimeric sequences to file"                      
+  # [24] "  --chimeras FILENAME         output chimeric sequences to file"  
+  # [31] "  --nonchimeras FILENAME      output non-chimeric sequences to file"
+  # [40] "  --uchimeout FILENAME        output to chimera info to tab-separated file" 
+  
+  # Not supported in this function
+  # [26] "  --dn REAL                   'no' vote pseudo-count (1.4)"                                      
+  # [27] "  --fasta_score               include chimera score in fasta output"   
   # [32] "  --relabel STRING            relabel nonchimeras with this prefix string"                       
   # [33] "  --relabel_keep              keep the old label after the new when relabelling"                 
   # [34] "  --relabel_md5               relabel with md5 digest of normalized sequence"                    
   # [35] "  --relabel_sha1              relabel with sha1 digest of normalized sequence"                   
-  # [36] "  --self                      exclude identical labels for --uchime_ref"                         
-  # [37] "  --selfid                    exclude identical sequences for --uchime_ref"                      
   # [38] "  --sizeout                   include abundance information when relabelling"                    
-  # [39] "  --uchimealns FILENAME       output chimera alignments to file"                                 
-  # [40] "  --uchimeout FILENAME        output to chimera info to tab-separated file"                      
+  # [39] "  --uchimealns FILENAME       output chimera alignments to file"
+  # [22] "  --alignwidth INT            width of alignment in uchimealn output (80)"  
   # [41] "  --uchimeout5                make output compatible with uchime version 5"                      
   # [42] "  --xn REAL                   'no' vote weight (8.0)"                                            
-  # [43] "  --xsize                     strip abundance information in output"                             
-  return(invisible(.vsearchBin(args=args)))
+  # [43] "  --xsize                     strip abundance information in output"  
+  
+  # vsearch --uchime_denovo R-1_Rep1.representatives_nonchimeras.fasta --nonchimeras R-1_Rep1.representatives_nonchimeras2.fasta
+  syscall <- paste("--uchime_denovo ", sortfile, "--mindiffs", 3, "--minh", 0.2, "--nonchimeras", nonchimerafile, "--chimeras", chimerafile, "--borderline", borderfile, "--uchimeout", resfile, sep=" ")
+  return(invisible(.vsearchBin(args=syscall)))
 }
 
 
-## Helper function that return a description of the intended usage for swarm
+## Helper function that return a description of the intended usage for vsearch
 vsearch_usage <- function(){
   print(.vsearchBin(args="--help"))
 }
 
 
-## Helper function that return the version of swarm
+## Helper function that return the version of vsearch
 vsearch_version <- function(){
     print(.vsearchBin(args="--version"))
 }
