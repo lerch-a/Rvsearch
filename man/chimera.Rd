@@ -8,11 +8,12 @@
   Detect chimeras de novo and using a reference database.
 }
 \usage{
-  chimeraDetectionDenovo(filename, abskew=2.0, mindiffs=3L, mindiv=0.8, minh=0.28,
-                                   nonchimeras=sub(".fasta", "_nonchimera.fasta", filename), 
-                                   chimeras=sub(".fasta", "_chimera.fasta", filename), 
-                                   borderline=sub(".fasta", "_bordchimera.fasta", filename), 
-                                   uchimeout=sub(".fasta", "_chimeraResults.txt", filename))
+  chimeraDetectionDenovo(filename, 
+                         abskew=2.0, mindiffs=3L, mindiv=0.8, minh=0.28,
+                         nonchimeras=sub(".fasta", "_nonchimera.fasta", filename), 
+                         chimeras=sub(".fasta", "_chimera.fasta", filename), 
+                         borderline=sub(".fasta", "_bordchimera.fasta", filename), 
+                         uchimeout=sub(".fasta", "_chimeraResults.txt", filename))
   %%chimeraDetectionRef()
 }
 %- maybe also 'usage' for other objects documented here.
