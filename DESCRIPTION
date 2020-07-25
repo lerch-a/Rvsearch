@@ -1,12 +1,12 @@
 Package: Rvsearch
 Type: Package
-Title: R swarm wrapper
+Title: R vsearch Wrapper
 Version: 0.99.1
 Date: 2016-04-11
 Author: Anita Lerch
 Maintainer: Anita Lerch <anita.lerch@unibas.ch>
 Suggests: 
-Description: This package provides an R wrapper around vsearch, a rXXXX. The package is used by the ZZZ bioconductor package.
-License: GNUv3
+Description: Rvsearch provides an R wrapper around vsearch, a rXXXX. The package is used by the HaplotypR package.
+License: GPL-3
 LazyLoad: yes
 biocViews: HighThroughputSequencing
