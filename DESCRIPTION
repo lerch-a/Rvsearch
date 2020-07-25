@@ -7,6 +7,6 @@ Author: Anita Lerch
 Maintainer: Anita Lerch <anita.lerch@unibas.ch>
 Suggests: 
 Description: Rvsearch provides an R wrapper around vsearch, a rXXXX. The package is used by the HaplotypR package.
-License: GNUv3
+License: GPL-3
 LazyLoad: yes
 biocViews: HighThroughputSequencing
