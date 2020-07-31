@@ -1,1 +1,58 @@
 
+
+.downloadBinaries <- function(path="Rvsearch", tag="2.15.0", platform=Sys.info()[["sysname"]]){
+
+  require(devtools)
+  
+  # create directory for binary file
+  dir.create(file.path(path, 'inst'), showWarnings = FALSE)
+  
+  # create temporary directory
+  tmpdir <- file.path(path, 'tmp')
+  dir.create(tmpdir, showWarnings = FALSE)
+
+
+  url <- sprintf("https://github.com/torognes/vsearch/releases/download/v%s/vsearch-%s", tag, tag)
+  
+  if (grepl('windows', platform, ignore.case = TRUE)) {
+    # windows binaries
+    vsearch_bin_url <- paste0(url, "-win-x86_64.zip")
+    unwrap <- unzip
+    exe_name <- "vsearch.exe"
+    
+  } else if (grepl('linux', platform, ignore.case = TRUE)) {
+    # linux binaries
+    vsearch_bin_url <- paste0(url, "-linux-x86_64.tar.gz")
+    unwrap <- untar
+    exe_name <- "bin/vsearch"
+    
+  } else {
+    # macos binaries
+    vsearch_bin_url <- paste0(url, "-macos-x86_64.tar.gz")
+    unwrap <- untar
+    exe_name <- "bin/vsearch"
+  }
+  
+  # download vsearch 
+  vsearch_bundle <- file.path(tmpdir, basename(vsearch_bin_url))
+  download.file(url = vsearch_bin_url, destfile = vsearch_bundle, mode = 'wb')
+  # unpack
+  unwrap(vsearch_bundle, exdir = tmpdir)
+  unlink(vsearch_bundle)
+  # move binary to inst/vsearch(.exe)
+  vsearch_bin <- list.files(tmpdir, pattern = 'vsearch', full.names = TRUE)[1]
+  invisible(file.rename(file.path(vsearch_bin, exe_name), file.path(path, "inst", basename(exe_name))))
+  
+  # remove tmpdir
+  unlink(tmpdir, recursive = TRUE)
+  # remove src to prevent compilation
+  unlink(file.path(path, "src"), recursive = TRUE)
+
+}
+
+.buildBinaries <- function(path="Rvsearch"){
+  devtools::build(pkg = path, path = ".", binary = T, vignettes = F, manual = T)
+}
+
+.downloadBinaries()
+.buildBinaries()
